@@ -1,12 +1,17 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 )
 
+const localUserKey = "user"
+
 func WithAuthenticatedUser(c *fiber.Ctx) error {
-	fmt.Println("this is getting called")
+	c.Locals(localUserKey, nil)
+
+	// authentification here..
+	// c.Locals(LocalUserKey, )
+
+	//c.Locals(localUserKey, &data.User{ID: 1, Email: "foo@bar.com"})
 	return c.Next()
 }

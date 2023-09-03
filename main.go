@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/amezianechayer/ssltracker/db"
 	"github.com/amezianechayer/ssltracker/handlers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
@@ -16,10 +17,16 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	db.Init()
+
 	app.Static("/static", "./static")
 	app.Use(favicon.New(favicon.ConfigDefault))
 	app.Use(handlers.WithAuthenticatedUser)
 	app.Get("/", handlers.HandleGetHome)
+
+	//TODO/ protected routes
+	app.Get("/dashboard", handlers.HandleGetDashboard)
 
 	log.Fatal(app.Listen(os.Getenv("HTTP_LISTEN_ADDR")))
 }
